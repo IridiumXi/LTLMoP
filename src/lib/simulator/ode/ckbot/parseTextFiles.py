@@ -93,7 +93,7 @@ def loadRobotData(sim, filename):
 					axis_idx = 3
 				sim.baserot = multmatrix(genmatrix(angle,axis_idx),sim.baserot)
 
-		# Forward vector reading thingy
+		# Read the forward vector of the configuration.
 		elif reading == "fwd_vector":
 			if linesplit == []:
 				reading = "none"

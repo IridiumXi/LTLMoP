@@ -16,6 +16,7 @@ class actuatorHandler:
 		self.runtime = shared_data['Runtime']
 		self.library = shared_data['Library']
 		self.config = shared_data['Config']
+		self.default_config = shared_data['Default_Config']
 		self.traits = []
 
 	def setActuator(self, name, val):
@@ -56,7 +57,6 @@ class actuatorHandler:
 
 			# If there are no gaits available then reconfigure to the default.
 			elif (type(config) == type(None) or self.traits == ["hardware"]):
-				self.runtime.reconfigure("Snake")
-			#self.runtime.reconfigure("Tee")
+				self.runtime.reconfigure(self.default_config)
 
 		print "(ACT) Actuator %s is now %s!" % tuple(map(str, (name, val)))

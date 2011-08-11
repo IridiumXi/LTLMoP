@@ -106,7 +106,12 @@ if (__name__ == '__main__'):
 				# Write gene/fitness information.
 				str_out = ""
 				for j in range(len(gene)):
-					str_out = str_out + str(gene[j]) + " "
+					if j==0 and gene[j]<10:
+						str_out = str_out + "0" + str(gene[j]) + " "
+					elif j%3==0 and gene[j]<10:
+						str_out = str_out + "0" + str(gene[j]) + " "
+					else:
+						str_out = str_out + str(gene[j]) + " "
 				f_gene.write(str_out+"\n")
 				f_gene.write(str(fitness)+"\n")
 				

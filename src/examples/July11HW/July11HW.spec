@@ -28,7 +28,7 @@ CKBotJul11HW.robot
 Actions: # List of actions and their state (enabled = 1, disabled = 0)
 carrying_person,1
 taking_cover,1
-T_narrow,0
+T_narrow,1
 T_low,1
 T_legged,1
 T_hardware,1
@@ -54,6 +54,7 @@ Rescue_Point=p8
 Mountain3=p9
 Mountain1=p11
 Safehouse=p6
+between$LeftOfTrench$and$RightOfTrench$=p4,p13
 RightOfTrench=p7
 Trench=p4
 Trail=p5
@@ -67,22 +68,20 @@ Spec: # Specification in simple English
 Robot starts in Trail
 Env starts with false
 Always not Cliff and not Mountain1 and not Mountain2 and not Mountain3
-#Always do T_hardware and T_legged and T_low
-
-Visit Safehouse
-Visit Watchtower
+Always do T_hardware
 
 # Rescue Mission
-#If you are sensing distress_signal then visit Rescue_Point
-#If you are activating carrying_person or you activated carrying_person then visit Safehouse
-#carrying_person is set on Rescue_Point and reset on Safehouse
-#If you are not sensing distress_signal and you are not activating carrying_person then visit Watchtower
-#If you are activating carrying_person or you activated carrying_person then do not RightOfTrench
+If you are sensing distress_signal then visit Rescue_Point
+If you are activating carrying_person or you activated carrying_person then visit Safehouse
+carrying_person is set on Rescue_Point and reset on Safehouse
+If you are not sensing distress_signal and you are not activating carrying_person then visit Watchtower
+If you are activating carrying_person or you activated carrying_person then do not RightOfTrench
 
 # Traits
-#If you are in LeftOfTrench or RightOfTrench then do not taking_cover
-#Do taking_cover if and only if you are sensing air_raid and you are not activating T_narrow and you did not activate T_narrow
-#Do T_low if and only if you are activating taking_cover
-#Do T_legged if and only if you are activating taking_cover
+If you are in LeftOfTrench or RightOfTrench then do not taking_cover
+Do taking_cover if and only if you are sensing air_raid and you are not activating T_narrow and you did not activate T_narrow
+Do T_low if and only if you are activating taking_cover
+Do T_legged if and only if you are activating taking_cover
+Do T_narrow if and only if you are in between LeftOfTrench and RightOfTrench
 
 

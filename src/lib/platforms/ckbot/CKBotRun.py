@@ -35,9 +35,9 @@ class CKBotRun:
 
 		# Initialize the time
 		self.starttime = time.time()
-		
 
-	def loadRobotData(self,filename):
+
+	def loadRobotData(self, filename):
 		"""
 		Loads full robot information from a text file that specifies:
 		1. Configuration Matrix.
@@ -49,7 +49,6 @@ class CKBotRun:
 		self.config = "none"
 		self.connM = []
 		self.gaits = []
-		self.cluster.populate()
 
 		# Open the text file.
 		data = open(filename,"r")
@@ -65,8 +64,6 @@ class CKBotRun:
 					reading = "name"
 				elif linesplit[0] == "ConnMatrix:":
 					reading = "matrix"
-				elif linesplit[0] == "ForwardVector:":
-					reading = "fwd_vector"
 				elif linesplit[0] == "Gaits:":
 					reading = "gait"
 
@@ -87,56 +84,34 @@ class CKBotRun:
 						temprow.append(int(num))
 					self.connM.append(temprow)
 
-
-			# Forward vector reading thingy
-			elif reading == "fwd_vector":
-				if linesplit == []:
-					reading = "none"
-				else:
-					sign = linesplit[0]
-					axis = linesplit[1]
-					if sign == "+":
-						coeff = 1
-					else:
-						coeff = -1
-					
-					if axis == "x":
-						self.fwdvec = [coeff*1, 0, 0]
-					elif axis == "y":
-						self.fwdvec = [0, coeff*1, 0]
-					elif axis == "z":
-						self.fwdvec = [0, 0, coeff*1]
-
 			# If we are reading gaits, it is more complicated. We must ensure to read all the gaits specified.
 			# For each gait, we must be able to tell whether the gait is Periodic or Fixed type and 
 			# parse it accordingly.
 
-			elif reading == "gait":
-
-				# Read the Proportional control gain specified in the text file.
-				if linesplit[0] == "Gain":
-					self.gain = float(linesplit[1])
-
-				# Figure out whether the gaits are fixed or periodic
+			elif reading == "gait" and linesplit != []:
+				if linesplit[0] == "Gait":
+					reading = "gaittype"
+			
+			elif reading == "gaittype":
 				if linesplit[0] == "Type":
-					self.gaittype = linesplit[1]
-					if self.gaittype == "Periodic":
+					gaittype = linesplit[1]
+					if gaittype == "Periodic":
 						reading = "periodic_gait"
-					else:
-						reading = "fixed_gait"				  
+					elif gaittype == "Fixed":
+						reading = "fixed_gait"	
+						gaitrows = []
+						gaittime = 0					
 
 			# If we are reading periodic gaits, we know our gait table is just 3 lines.
 			# The first line is the set of amplitudes (in degrees*100) of each hinge.
 			# The second line is the set of frequencies (in rad/s) of each hinge.
 			# The third line is the set of phase angles (in degrees*100) of each hinge.
-			elif reading == "periodic_gait" and linesplit != []:
-				if linesplit[0] == "Gait":
-					amplitudes = []
-					frequencies = []
-					phases = []
-					reading = "amplitude"
+					
+			elif reading == "periodic_gait":
+				amplitudes = []
+				frequencies = []
+				phases = []
 
-			elif reading == "amplitude":
 				for elem in linesplit:
 					amplitudes.append( float(elem)*(math.pi/180.0)*(1/100.0) )
 				reading = "frequency"
@@ -149,32 +124,34 @@ class CKBotRun:
 			elif reading == "phase":
 				for elem in linesplit:
 					phases.append( float(elem)*(math.pi/180.0)*(1/100.0) )
-				tempgait = [amplitudes]
+				tempgait = ["periodic"]
+				tempgait.append(amplitudes)
 				tempgait.append(frequencies)
 				tempgait.append(phases)
 				self.gaits.append(tempgait)
-				reading = "periodic_gait"
+				reading = "gait"
 
 			# If we are reading fixed gaits, the gait table can be an arbitrary number of lines.
 			# For each gait we will read all the steps until we find the last line for the gait 
 			# (which the time that the gait should loop in).
 			elif reading == "fixed_gait" and linesplit != []:
-				if linesplit[0] == "Gait":
-					gaitrows = []
-					gaittime = 0
-					reading = "fixed_gait_rows"
 
-			elif reading == "fixed_gait_rows":
 				if len(linesplit)==1:
 					gaittime = [float(linesplit[0])]
-					gaittime.extend(gaitrows)
-					self.gaits.append(gaittime)
-					reading = "fixed_gait"
+					tempgait = ["fixed"]
+					tempgait.extend(gaittime)
+					tempgait.extend(gaitrows)
+					self.gaits.append(tempgait)
+					reading = "gait"
 				else:
 					temprow = []
 					for elem in linesplit:
 						temprow.append( float(elem)*(math.pi/180.0)*(1/100.0) )
-					gaitrows.append(temprow)		    
+					gaitrows.append(temprow)
+
+		# Finally, populate the Cluster.		
+		self.cluster.populate()    
+
 
 	def getKeyOrders(self,config):
 		"""
@@ -197,6 +174,7 @@ class CKBotRun:
 						self.key_orders.append(int(linesplit[idx]))
 		print self.key_orders
 
+
 	def setGait(self,gait):
 		"""
 		Set the gait number for simulation
@@ -206,51 +184,42 @@ class CKBotRun:
 
 	def rungait(self):
 		"""
-		Runs the gait specified by the object variable "self.gait"
+		Runs the gait specified by the object variable "gait"
 		"""
-
-		t = time.time() - self.starttime
-		gait = self.gaits[self.gait - 1]
-
-		# If the gait is set to zero, stop moving all hinges.
-		if self.gait == 0:
-			pass
-
-		else:
 	
-			#If the gait is of periodic type, read the rows in the following format.
-			#ROW 1: Amplitudes
-			#ROW 2: Frequencies
-			#ROW 3: Phases
-			if self.gaittype == "Periodic":
-				for module_idx in range(len(self.connM)):
-					amplitude = gait[0][module_idx]
-					frequency = gait[1][module_idx]
-					phase = gait[2][module_idx]
+		t = time.time() - self.starttime
 
-					ref_ang = amplitude*math.sin(frequency*t*0.25 + phase)
-
-					ref_ang = ref_ang*(0.5*18000.0/math.pi)
-		
-					self.cluster[self.key_orders[module_idx]].set_pos(ref_ang)
+		gait = self.gaits[self.gait - 1]
+		gaittype = gait[0]
+	
+		for module_idx in range(len(self.connM)):
+			# If the gait is of periodic type, read the rows in the following format.
+			# ROW 1: Amplitudes
+			# ROW 2: Frequencies
+			# ROW 3: Phases
+			if gaittype == "periodic":
+				amplitude = gait[1][module_idx]
+				frequency = gait[2][module_idx]
+				phase = gait[3][module_idx]
+				ref_ang = amplitude*math.sin(frequency*t + phase)
 
 			# If the gait is of fixed type, run the function "gaitangle" to interpolate between
 			# reference hinge angles at the current time.
-			else:
-				for module_idx in range(len(self.connM)):   
-					ref_ang = self.gaitangle(gait,t,module_idx)
-	
-					ref_ang = ref_ang*(0.5*18000.0/math.pi)
-		
-					self.cluster[self.key_orders[module_idx]].set_pos(ref_ang)
+			elif gaittype == "fixed":   
+				ref_ang = self.gaitangle(gait,t,module_idx)
 
-	def gaitangle(self,gait,time,module):
+			# Set the actual joint angles.
+			ref_ang = 0.5*ref_ang*(180.0*100.0)/math.pi 		#0.5 FUDGE FACTOR due to calibration issues.
+			self.cluster[self.key_orders[module_idx]].set_pos(ref_ang)
+
+
+	def gaitangle(self, gait, t, module):
 		"""
 		Takes in a gait matrix and returns the reference angle at that point in time.
 		"""
 
-		nummoves = len(gait)-1
-		gaittime = gait[0]
+		nummoves = len(gait)-2
+		gaittime = gait[1]
 		singletime = float(gaittime)/(nummoves-1)
 
 		timearray = []
@@ -259,10 +228,10 @@ class CKBotRun:
 				timearray.append(0)
 			else:
 				timearray.append(timearray[i-1]+singletime)
-	
-		currenttime = (time%gaittime)/singletime
-		globalref = gait[int(math.ceil(currenttime))+1][module]
-		globalprev = gait[int(math.floor(currenttime))+1][module]
+
+		currenttime = (t%gaittime)/singletime
+		globalref = gait[int(math.ceil(currenttime))+2][module]
+		globalprev = gait[int(math.floor(currenttime))+2][module]
 
 		if globalref==globalprev:
 			# If the current time coincides with the time of a given gait angle direction, then there is no need to interpolate.

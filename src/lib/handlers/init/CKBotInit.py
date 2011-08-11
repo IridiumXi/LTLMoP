@@ -17,14 +17,14 @@ class initHandler:
     def __init__(self, proj, calib=False):
 
 		# Define the default configuration.
-		default_config = "Tripod"
+		self.default_config = "Tripod"
 
 		# Initiate the CKBot runtime thread.
 		#self.runtime = CKBotThread(os.path.join(proj.ltlmop_root,"lib/platforms/ckbot/config/" + default_config + ".ckbot"))
 		#self.config = self.runtime.runtime.config
 		#self.runtime.start()
 
-		self.runtime = CKBotRun.CKBotRun(os.path.join(proj.ltlmop_root,"lib/platforms/ckbot/config/" + default_config + ".ckbot"))
+		self.runtime = CKBotRun.CKBotRun(os.path.join(proj.ltlmop_root,"lib/platforms/ckbot/config/" + self.default_config + ".ckbot"))
 		self.config = self.runtime.config
 
 		# Instantiate the CKBot library
@@ -34,7 +34,7 @@ class initHandler:
         # Return a dictionary of any objects that will need to be shared with
         # other handlers
 
-        return {'Runtime': self.runtime, "Library": self.lib, "Config": self.config, "Angle": 0.0}
+        return {'Runtime': self.runtime, "Library": self.lib, "Config": self.config, "Default_Config": self.default_config, "Angle": 0.0}
 
 class CKBotThread(Thread):
     def __init__(self, robotfile):
