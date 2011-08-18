@@ -474,8 +474,8 @@ public class GROneGame {
                 /* Find Y index of current state */
                 // find minimal cy and an i
                 int p_cy = -1;
-                for (int i = 0; i < y_mem[p_j].length; i++) {
-                    if (!p_st.and(y_mem[p_j][i]).isZero()) {
+				for (int i = 0; i < y_mem[p_j].length; i++) {
+				    if (!p_st.and(y_mem[p_j][i]).isZero()) {
                         p_cy = i;
                         break;
                     }
@@ -526,7 +526,7 @@ public class GROneGame {
 								int next_p_j = (p_j + 1) % sysJustNum;   
 								
 								//Look for the next goal and see if you can satisfy it by staying in place. If so, swell.
-								while (!next_op.and(sys.justiceAt(next_p_j)).isZero() && next_p_j!=p_j)
+								while (!next_op.and((p_st).and(sys.justiceAt(next_p_j))).isZero() && next_p_j!=p_j)
 								{
 									next_p_j = (next_p_j + 1) % sysJustNum;		
 								}
