@@ -23,7 +23,7 @@ class actuatorHandler:
 		Sets CKBot configurations.
 		"""	
 		
-		print name + " is set to " + val
+		print name + " is set to " + str(val)
 		
 		if name[0]== "T" and val==True:
 			self.trueTraits.add(name.lstrip("T_"))
