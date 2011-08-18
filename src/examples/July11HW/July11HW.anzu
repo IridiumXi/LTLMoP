@@ -44,7 +44,7 @@ s.T_hardware;
 				 + (s.bit0=1 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=0)
 				 + (s.bit0=1 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1)
 			) ;
-			 ( ((s.bit0=0 * s.bit1=0 * s.bit2=1 * s.bit3=0 * s.bit4=0))) ;
+			 ( ((s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1))) ;
 
 
 [SYS_TRANSITIONS]

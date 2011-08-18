@@ -171,7 +171,7 @@
         sys init 1
       </name>
       <property>
-        (((s.bit0=0&amp;&amp;s.bit1=0&amp;&amp;s.bit2=1&amp;&amp;s.bit3=0&amp;&amp;s.bit4=0)))
+        (((s.bit0=0&amp;&amp;s.bit1=0&amp;&amp;s.bit2=0&amp;&amp;s.bit3=0&amp;&amp;s.bit4=1)))
       </property>
       <kind>
         G

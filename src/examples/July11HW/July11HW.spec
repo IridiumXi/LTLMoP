@@ -9,7 +9,7 @@ Calibration: # Coordinate transformation between map and experiment: XScale, XOf
 0.00389870772353,4.90599856067,-0.00671099530731,2.4577584091
 
 InitialRegion: # Initial region number
-6
+9
 
 InitialTruths: # List of initially true propositions
 
@@ -65,7 +65,7 @@ Mountain2=p10
 Cliff=p13
 
 Spec: # Specification in simple English
-Robot starts in Trail
+Robot starts in Safehouse
 Env starts with false
 Always not Cliff and not Mountain1 and not Mountain2 and not Mountain3
 Always do T_hardware
