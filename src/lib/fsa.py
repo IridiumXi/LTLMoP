@@ -418,8 +418,8 @@ class Automaton:
                 self.current_state = self.next_state  # We can transition immediately
                 #print "Now in state %s (rank = %s)" % (self.current_state.name, self.current_state.rank)
 
-                # Actuate anything that might be necessary
-                self.updateOutputs()
+            # Actuate anything that might be necessary
+            self.updateOutputs(self.next_state)
 
         # Move one step towards the next region (or stay in the same region)
         # TODO: Use the "last" controllers?
@@ -441,5 +441,4 @@ class Automaton:
             self.current_region = self.next_region
             #print "Now in state %s (rank = %s)" % (self.current_state.name, self.current_state.rank)
 
-            # Actuate anything that might be necessary
-            self.updateOutputs()
+         
