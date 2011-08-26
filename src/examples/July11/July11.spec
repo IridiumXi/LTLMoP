@@ -6,7 +6,7 @@
 ======== EXPERIMENT CONFIG 0 ========
 
 Calibration: # Coordinate transformation between map and experiment: XScale, XOffset, YScale, YOffset
-0.8,0.0,-0.8,0.0
+0.75,0.0,-0.75,0.0
 
 InitialRegion: # Initial region number
 9
@@ -51,8 +51,9 @@ Default
 RegionMapping:
 
 Rescue_Point=p8
-Mountain3=p9
+Mountain2=p10
 Mountain1=p11
+Mountain3=p9
 Safehouse=p6
 between$LeftOfTrench$and$RightOfTrench$=p4,p13
 RightOfTrench=p7
@@ -61,27 +62,25 @@ Trail=p5
 LeftOfTrench=p12
 others=p14,p15,p16,p17,p18,p19,p20
 Watchtower=p3
-Mountain2=p10
 Cliff=p13
 
 Spec: # Specification in simple English
+# Initial conditions and Safeties
 Robot starts in Safehouse
 Env starts with false
 Always not Cliff and not Mountain1 and not Mountain2 and not Mountain3
+Do not Trail unless you activated carrying_person or you are activating carrying_person
 
 # Rescue Mission
 If you are sensing distress_signal then visit Rescue_Point
-#If you are activating carrying_person or you activated carrying_person then do not distress_signal
+If you are activating carrying_person or you activated carrying_person then do not Trench
 If you are activating carrying_person or you activated carrying_person then visit Safehouse
 carrying_person is set on Rescue_Point and reset on Safehouse
 If you are not sensing distress_signal and you are not activating carrying_person then visit Watchtower
-If you are activating carrying_person or you activated carrying_person then do not RightOfTrench
 
-# Traits
-If you are in LeftOfTrench or RightOfTrench then do not taking_cover
+# Traits and Reconfiguration
 Do T_narrow if and only if you are in between LeftOfTrench and RightOfTrench
-Do taking_cover if and only if you are sensing air_raid and you are not activating T_narrow and you did not activate T_narrow
-Do T_low if and only if you are activating taking_cover
-Do T_legged if and only if you are activating taking_cover
+Do taking_cover if and only if you are sensing air_raid
+Do T_low and T_legged if and only if you are activating taking_cover
 
 

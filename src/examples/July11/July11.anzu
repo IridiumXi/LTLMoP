@@ -53,7 +53,6 @@ s.T_legged;
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=0))) 			 G( ((s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1)) -> ( ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=1)))
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=0))) 			 G( ((s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=1 * s.bit4=0)) -> ( ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0)))
 									+ ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=1))) 
-									+ ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=0))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=1) * X(s.bit4=1))) 
 									+ ((X(s.bit0=1) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=0))) 
@@ -63,7 +62,6 @@ s.T_legged;
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=1))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=1))) 			 G( ((s.bit0=0 * s.bit1=0 * s.bit2=1 * s.bit3=0 * s.bit4=0)) -> ( ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=0)))
-									+ ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0))) 
 									+ ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=1))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=1))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=1) * X(s.bit4=1))) 			 G( ((s.bit0=0 * s.bit1=0 * s.bit2=1 * s.bit3=0 * s.bit4=1)) -> ( ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=1)))
@@ -115,16 +113,15 @@ s.T_legged;
 									+ ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=1))) 
 									+ ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=1) * X(s.bit3=1) * X(s.bit4=0))) 
 									+ ((X(s.bit0=1) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=0))) 			 G(  !  ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0)))  *   !  ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=0)))  *   !  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=1) * X(s.bit4=1)))  *   !  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=1) * X(s.bit4=0)))) ;
+			 G((  !  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=1) * X(s.bit3=0) * X(s.bit4=0))))  + (( s.carrying_person=1 )  +  ( X(s.carrying_person=1) ) )) ;
+			 G((( X(s.carrying_person=1) )  +  ( s.carrying_person=1 ) ) -> (  !  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=1)))) ) ;
 			 (G(( (((s.bit0=0 * s.bit1=0 * s.bit2=1 * s.bit3=0 * s.bit4=1))) * (((!s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1)))) -> X(s.carrying_person=1)) ) ;
 			 (G(  (((s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1))) -> X(s.carrying_person=0)) ) ;
 			 (G(( (s.carrying_person=1) * (((!s.bit0=0 * s.bit1=0 * s.bit2=0 * s.bit3=0 * s.bit4=1)))) -> X(s.carrying_person=1)) ) ;
 			 (G(( (s.carrying_person=0) * (((!s.bit0=0 * s.bit1=0 * s.bit2=1 * s.bit3=0 * s.bit4=1)))) -> X(s.carrying_person=0)) ) ;
-			 G((( X(s.carrying_person=1) )  +  ( s.carrying_person=1 ) ) -> (  !  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0)))) ) ;
-			 G((( ((X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=0) * X(s.bit4=1)))  +  ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0))) ) ) -> (  !  X(s.taking_cover=1)) ) ;
 			 G((( ((X(s.bit0=0) * X(s.bit1=0) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=1))  +  (X(s.bit0=0) * X(s.bit1=1) * X(s.bit2=0) * X(s.bit3=1) * X(s.bit4=0))) ) ) <-> ( X(s.T_narrow=1)) ) ;
-			 G((( X(e.air_raid=1) )  *  !( X(s.T_narrow=1) )  *  !( s.T_narrow=1 ) ) <-> ( X(s.taking_cover=1)) ) ;
-			 G((( X(s.taking_cover=1) ) ) <-> ( X(s.T_low=1)) ) ;
-			 G((( X(s.taking_cover=1) ) ) <-> ( X(s.T_legged=1)) ) ;
+			 G((( X(e.air_raid=1) ) ) <-> ( X(s.taking_cover=1)) ) ;
+			 G((( X(s.taking_cover=1) ) ) <-> ( X(s.T_low=1)  *  X(s.T_legged=1)) ) ;
 
 
 [SYS_FAIRNESS]
